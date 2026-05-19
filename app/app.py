@@ -85,32 +85,100 @@ def predict_matchup(home_team_name, away_team_name):
 
     return predicted_winner, winner_prob, matchup.iloc[0]
 
-def explain_matchup(matchup_row, home_team_name, away_team_name):
-    reasons = []
+def explain_matchup(matchup_row, home_team_name, away_team_name, predicted_winner):
+    winner_reasons = []
+    opponent_reasons = []
 
+    # Shooting efficiency
     if matchup_row["fg_pct_diff"] > 0:
-        reasons.append(f"{home_team_name} has better shooting efficiency.")
+        better_team = home_team_name
+        reason = "better shooting efficiency"
     else:
-        reasons.append(f"{away_team_name} has better shooting efficiency.")
+        better_team = away_team_name
+        reason = "better shooting efficiency"
 
+    if better_team == predicted_winner:
+        winner_reasons.append(f"{better_team} have {reason}.")
+    else:
+        opponent_reasons.append(f"{better_team} have {reason}.")
+
+    # Free throws
     if matchup_row["ft_pct_diff"] > 0:
-        reasons.append(f"{home_team_name} has better free-throw shooting.")
+        better_team = home_team_name
+        reason = "better free-throw shooting"
     else:
-        reasons.append(f"{away_team_name} has better free-throw shooting.")
+        better_team = away_team_name
+        reason = "better free-throw shooting"
 
+    if better_team == predicted_winner:
+        winner_reasons.append(f"{better_team} have {reason}.")
+    else:
+        opponent_reasons.append(f"{better_team} have {reason}.")
+
+    # Rebounding
     if matchup_row["reb_diff"] > 0:
-        reasons.append(f"{home_team_name} has a rebounding advantage.")
+        better_team = home_team_name
+        reason = "a rebounding advantage"
     else:
-        reasons.append(f"{away_team_name} has a rebounding advantage.")
+        better_team = away_team_name
+        reason = "a rebounding advantage"
 
+    if better_team == predicted_winner:
+        winner_reasons.append(f"{better_team} have {reason}.")
+    else:
+        opponent_reasons.append(f"{better_team} have {reason}.")
+
+    # Assists
     if matchup_row["ast_diff"] > 0:
-        reasons.append(f"{home_team_name} has better ball movement based on assists.")
+        better_team = home_team_name
+        reason = "better ball movement based on assists"
     else:
-        reasons.append(f"{away_team_name} has better ball movement based on assists.")
+        better_team = away_team_name
+        reason = "better ball movement based on assists"
 
-    reasons.append(f"{home_team_name} may benefit from home-court advantage.")
+    if better_team == predicted_winner:
+        winner_reasons.append(f"{better_team} have {reason}.")
+    else:
+        opponent_reasons.append(f"{better_team} have {reason}.")
 
-    return reasons
+    # Home-court advantage
+    if predicted_winner == home_team_name:
+        winner_reasons.append(f"{home_team_name} may benefit from home-court advantage.")
+
+    return winner_reasons, opponent_reasons
+
+team_logos = {
+    "Hawks": "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg",
+    "Celtics": "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg",
+    "Nets": "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg",
+    "Hornets": "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg",
+    "Bulls": "https://cdn.nba.com/logos/nba/1610612741/primary/L/logo.svg",
+    "Cavaliers": "https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg",
+    "Mavericks": "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg",
+    "Nuggets": "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg",
+    "Pistons": "https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg",
+    "Warriors": "https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg",
+    "Rockets": "https://cdn.nba.com/logos/nba/1610612745/primary/L/logo.svg",
+    "Pacers": "https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg",
+    "Clippers": "https://cdn.nba.com/logos/nba/1610612746/primary/L/logo.svg",
+    "Lakers": "https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg",
+    "Grizzlies": "https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg",
+    "Heat": "https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg",
+    "Bucks": "https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg",
+    "Timberwolves": "https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg",
+    "Pelicans": "https://cdn.nba.com/logos/nba/1610612740/primary/L/logo.svg",
+    "Knicks": "https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg",
+    "Thunder": "https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg",
+    "Magic": "https://cdn.nba.com/logos/nba/1610612753/primary/L/logo.svg",
+    "76ers": "https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg",
+    "Suns": "https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg",
+    "Trail Blazers": "https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg",
+    "Kings": "https://cdn.nba.com/logos/nba/1610612758/primary/L/logo.svg",
+    "Spurs": "https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg",
+    "Raptors": "https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg",
+    "Jazz": "https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg",
+    "Wizards": "https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg"
+}
 
 team_list = sorted(team_stats["team_name"].unique())
 
@@ -121,15 +189,48 @@ if home_team == away_team:
     st.warning("Please select two different teams.")
 else:
     if st.button("Predict Winner"):
-        winner, prob, matchup_row = predict_matchup(home_team, away_team)
+        with st.spinner("Analyzing matchup..."):
+            winner, prob, matchup_row = predict_matchup(home_team, away_team)
+
+        st.markdown("---")
+
+        col1, col2, col3 = st.columns([1, 0.4, 1])
+
+        with col1:
+            st.image(team_logos.get(home_team), width=140)
+            st.markdown(f"### {home_team}")
+
+        with col2:
+            st.markdown("## vs")
+
+        with col3:
+            st.image(team_logos.get(away_team), width=140)
+            st.markdown(f"### {away_team}")
+
+        st.markdown("---")
 
         st.subheader("Prediction")
-        st.write(f"**Predicted Winner:** {winner}")
+        st.success(f"Predicted Winner: {winner}")
         st.write(f"**Win Probability:** {prob:.2%}")
 
-        st.subheader("Why this team is favored")
-        for reason in explain_matchup(matchup_row, home_team, away_team):
+        winner_reasons, opponent_reasons = explain_matchup(
+            matchup_row,
+            home_team,
+            away_team,
+            winner
+        )
+
+        st.subheader(f"Why {winner} is favored")
+        for reason in winner_reasons:
             st.write(f"- {reason}")
+
+        if opponent_reasons:
+            st.subheader("Strengths for the opposing team")
+            for reason in opponent_reasons:
+                st.write(f"- {reason}")
 
         st.subheader("Stat Difference: Home Team - Away Team")
         st.dataframe(matchup_row.to_frame("Difference"))
+
+
+        
