@@ -74,12 +74,10 @@ In addition to predicting which team is more likely to win, the app aims to prov
   - Interactive team matchup prediction logic
   - Streamlit app
 
-
--Technologies Used
-
-- Python
-- Pandas
-- Matplotlib
-- Scikit-learn
-- Jupyter Notebook
-- Streamlit
+- Technologies used
+  - Python
+  - Pandas
+  - Matplotlib
+  - Scikit-learn
+  - Jupyter Notebook
+  - Streamlit
