@@ -50,7 +50,6 @@ In addition to predicting which team is more likely to win, the app aims to prov
     - Train logistic regression model
     - Evaluation
       - Accuracy and confusion matrix
-    - Implemented improved model using team average statistics to reduce data leakage and obtain realistic predictions
 
   - Model interpretability
     - Analyze feature coefficients
@@ -68,16 +67,5 @@ In addition to predicting which team is more likely to win, the app aims to prov
   - Feature engineering
   - EDA
   - ML model training and evaluation
-  - Improved model using team average statistics
-  - Feature importance analysis
   - Prediction explanation system
-  - Interactive team matchup prediction logic
   - Streamlit app
-
-- Technologies used
-  - Python
-  - Pandas
-  - Matplotlib
-  - Scikit-learn
-  - Jupyter Notebook
-  - Streamlit
